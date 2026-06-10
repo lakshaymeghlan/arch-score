@@ -1,4 +1,4 @@
-# arch-score
+# "arch-score"
 
 > A language-agnostic CLI that scores how well **any** project follows modern system-design standards, recommends the best folder structure, and emits guidance files that make AI coding assistants follow good system design.
 
