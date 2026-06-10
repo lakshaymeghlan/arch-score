@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>arch-score report — cli</title>
+<style>
+  :root{--good:#2ea043;--ok:#d29922;--bad:#cf222e;--bg:#0d1117;--panel:#161b22;--fg:#e6edf3;--muted:#8b949e;--border:#30363d}
+  *{box-sizing:border-box}
+  body{margin:0;font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg)}
+  .wrap{max-width:900px;margin:0 auto;padding:40px 24px}
+  h1{font-size:20px;margin:0 0 4px}.sub{color:var(--muted);margin-bottom:28px}
+  .overall{display:flex;align-items:center;gap:24px;background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:28px}
+  .score{font-size:56px;font-weight:700;line-height:1}
+  .grade{font-size:24px;color:var(--muted)}
+  .good{color:var(--good)}.ok{color:var(--ok)}.bad{color:var(--bad)}
+  table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+  td{padding:10px 16px;border-top:1px solid var(--border)}
+  tr:first-child td{border-top:none}
+  .num{font-weight:700;text-align:right;width:48px}
+  .na{color:var(--muted)}
+  .track{display:inline-block;width:160px;height:8px;background:#21262d;border-radius:4px;overflow:hidden;vertical-align:middle}
+  .fill{height:100%}.fill.good{background:var(--good)}.fill.ok{background:var(--ok)}.fill.bad{background:var(--bad)}
+  .w{color:var(--muted);font-size:12px;margin-left:10px}
+  h2{font-size:15px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:32px 0 12px}
+  ol,ul{padding-left:20px}
+  .rec-msg{font-weight:600}.rec-fix{color:var(--muted)}.rec-refs{color:var(--muted);font-size:12px;font-family:ui-monospace,monospace}
+  li{margin-bottom:12px}
+  pre{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:16px;overflow:auto;font-family:ui-monospace,SFMono-Regular,monospace;font-size:13px}
+  .chip{display:inline-block;background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:12px;color:var(--muted);margin-right:6px}
+  footer{color:var(--muted);font-size:12px;margin-top:40px;border-top:1px solid var(--border);padding-top:16px}
+</style></head>
+<body><div class="wrap">
+  <h1>arch-score report</h1>
+  <div class="sub">
+    <span class="chip">cli</span>
+    <span class="chip">TypeScript</span>
+    
+    <span class="chip">deep tier</span>
+  </div>
+
+  <div class="overall">
+    <div><div class="score good">92</div></div>
+    <div>
+      <div class="grade good">Grade A</div>
+      <div class="sub" style="margin:0">Weighted across 9 categories</div>
+    </div>
+  </div>
+
+  <h2>Category scores</h2>
+  <table><tr>
+        <td>Architecture &amp; Layering</td>
+        <td class="num good">100</td>
+        <td><div class="track"><div class="fill good" style="width:100%"></div></div><span class="w">w20 · universal</span></td>
+      </tr>
+<tr>
+        <td>Modularity &amp; Coupling</td>
+        <td class="num good">100</td>
+        <td><div class="track"><div class="fill good" style="width:100%"></div></div><span class="w">w12 · deep</span></td>
+      </tr>
+<tr>
+        <td>Folder Structure</td>
+        <td class="num good">88</td>
+        <td><div class="track"><div class="fill good" style="width:88%"></div></div><span class="w">w16 · universal</span></td>
+      </tr>
+<tr>
+        <td>Testing Architecture</td>
+        <td class="num ok">77</td>
+        <td><div class="track"><div class="fill ok" style="width:77%"></div></div><span class="w">w12 · universal</span></td>
+      </tr>
+<tr>
+        <td>Config &amp; 12-Factor</td>
+        <td class="num good">92</td>
+        <td><div class="track"><div class="fill good" style="width:92%"></div></div><span class="w">w10 · universal</span></td>
+      </tr>
+<tr>
+        <td>Error Handling &amp; Resilience</td>
+        <td class="num good">85</td>
+        <td><div class="track"><div class="fill good" style="width:85%"></div></div><span class="w">w8 · universal</span></td>
+      </tr>
+<tr>
+        <td>Observability</td>
+        <td class="num good">100</td>
+        <td><div class="track"><div class="fill good" style="width:100%"></div></div><span class="w">w7 · universal</span></td>
+      </tr>
+<tr>
+        <td>Security Hygiene</td>
+        <td class="num good">100</td>
+        <td><div class="track"><div class="fill good" style="width:100%"></div></div><span class="w">w8 · universal</span></td>
+      </tr>
+<tr>
+        <td>Documentation</td>
+        <td class="num good">85</td>
+        <td><div class="track"><div class="fill good" style="width:85%"></div></div><span class="w">w7 · universal</span></td>
+      </tr></table>
+
+  <h2>Top recommendations</h2>
+  <ol><li><div class="rec-msg">[Testing Architecture] Modest test-to-source ratio (21%).</div><div class="rec-fix">Grow the suite around the most critical and most-changed modules.</div></li>
+<li><div class="rec-msg">[Folder Structure] Layout reads as &quot;hexagonal&quot; but &quot;layered&quot; suits a cli project better.</div><div class="rec-fix">Keep IO at the edges: a thin bin/ entry parses args and delegates to commands/, which call pure core/ logic. This keeps the business logic testable without spawning the CLI.</div></li>
+<li><div class="rec-msg">[Testing Architecture] No CI configuration found to run tests automatically.</div><div class="rec-fix">Add a CI workflow that runs the test suite on every push/PR.</div></li>
+<li><div class="rec-msg">[Config &amp; 12-Factor] Code reads environment variables but there's no .env.example documenting them.</div><div class="rec-fix">Add a committed .env.example listing every required variable (with safe placeholder values).</div></li>
+<li><div class="rec-msg">[Error Handling &amp; Resilience] No centralized error-handling module/middleware detected.</div><div class="rec-fix">Introduce a single error-handling boundary (middleware or top-level handler) that maps errors to responses/exit codes.</div></li>
+<li><div class="rec-msg">[Documentation] No architecture/design documentation (ARCHITECTURE.md or docs/).</div><div class="rec-fix">Document the high-level architecture and key decisions (consider arch-score --emit-md).</div></li>
+<li><div class="rec-msg">[Folder Structure] Missing 1 recommended director(ies) for this project type.</div><div class="rec-fix">No `commands/` directory — recommended for cli projects.</div></li>
+<li><div class="rec-msg">[Error Handling &amp; Resilience] 1 empty/swallowed catch block(s) — errors silently discarded.</div><div class="rec-fix">Handle, log, or rethrow in catch blocks; never swallow errors silently.</div><div class="rec-refs">src/analyzers/errorHandling.ts</div></li>
+<li><div class="rec-msg">[Documentation] No CONTRIBUTING guide for a non-trivial project.</div><div class="rec-fix">Add CONTRIBUTING.md describing setup, conventions, and the PR process.</div></li></ol>
+
+  <h2>Folder structure — hexagonal → layered</h2>
+  <p>Keep IO at the edges: a thin bin/ entry parses args and delegates to commands/, which call pure core/ logic. This keeps the business logic testable without spawning the CLI.</p>
+  <ul><li>No `commands/` directory — recommended for cli projects.</li>
+<li>Current layout reads as &quot;hexagonal&quot;; consider migrating toward &quot;layered&quot; for this project type.</li></ul>
+  <pre>bin/                 # executable entry, arg parsing only
+src/
+  commands/          # one module per command, thin
+  core/              # pure business logic, no process/IO
+  adapters/          # fs, network, process boundaries
+  config/
+tests/</pre>
+
+  <footer>Generated by arch-score v0.1.0 · 2026-06-10T10:24:55.929Z</footer>
+</div></body></html>

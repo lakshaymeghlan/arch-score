@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Test/coverage artifacts
+coverage/
+
+# Generated reports (don't commit local scans)
+archscore-report.html
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+*.log
+
+# Local Claude config
+.claude/
