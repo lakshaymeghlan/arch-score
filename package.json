@@ -42,7 +42,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "start": "node dist/bin/archscore.js",
-    "selfscan": "node dist/bin/archscore.js ."
+    "selfscan": "node dist/bin/archscore.js .",
+    "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {},
   "devDependencies": {
