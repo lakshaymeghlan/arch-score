@@ -17,12 +17,17 @@
   ──────────────────────────────────────────────────────
 
   Categories
-    Architecture & Layering      100 ██████████████ w20
-    Modularity & Coupling         80 ███████████░░░ w12 ◆
-    Folder Structure              88 ████████████░░ w16
-    Testing Architecture          45 ██████░░░░░░░░ w12
+    Architecture & Layering      100 ██████████████ w19
+    Modularity & Coupling         80 ███████████░░░ w11 ◆
+    Folder Structure              88 ████████████░░ w15
+    Testing Architecture          45 ██████░░░░░░░░ w11
+    Containerization              70 ██████████░░░░ w6
     ...
 ```
+
+> Weights are normalized across the categories that apply to your project — a
+> backend includes Containerization (shown above); a CLI or library re-weights
+> it out, and the remaining categories total 100 on their own.
 
 ---
 
@@ -59,7 +64,7 @@ archscore . --emit-skill --format claude   # writes CLAUDE.md for AI assistants
 `arch-score` auto-detects languages, frameworks, and project type from manifests
 (`package.json`, `pyproject.toml`, `go.mod`, `pom.xml`, `Cargo.toml`, `composer.json`, `Gemfile`, …) and file extensions, then runs two tiers:
 
-- **Universal tier** — works for **every** language. Folder/architecture pattern detection, config-as-env vs hardcoded, test presence & ratio, docs, CI/CD, containerization, observability config, dependency-manifest health, secret-leakage heuristics, and file/module size outliers.
+- **Universal tier** — works for **every** language. Folder/architecture pattern detection, config-as-env vs hardcoded, test presence & ratio, a CI-runs-tests check, docs, containerization (Dockerfile/compose) for services, observability config, lockfile & dependency-pinning checks, secret-leakage heuristics, and file/module size outliers.
 - **Deep tier** — optional per-language plugins that build a real import/dependency graph for **circular-dependency**, **fan-in/fan-out**, and **graph-depth** analysis. Ships with adapters for **JavaScript/TypeScript, Python, and Go**. For unsupported languages it **degrades gracefully** to universal-tier scoring and tells you which tier ran.
 
 The report header always states the tier used, and any category that can't be
@@ -72,22 +77,29 @@ scored zero — so an unsupported language is never silently penalized.
 
 Each category is scored 0–100 against a transparent rubric (start at 100, lose
 points per finding), then combined into a weighted overall score. The default
-profile is **structure-first**:
+profile is **structure-first**. Weights are **relative**: arch-score normalizes
+them across the categories that apply to your project, so the effective weights
+always total 100 for a given project.
 
 | Category | Weight | Tier | What it rewards |
 | --- | ---: | --- | --- |
 | **Architecture & Layering** | 20 | Universal | A recognizable pattern, thin entry points, no god-folders |
 | **Folder Structure** | 16 | Universal | Layout matches a convention for the detected project type; sane depth |
-| **Modularity & Coupling** | 12 | Deep* | No circular deps, no fan-out/fan-in outliers, shallow graph |
-| **Testing Architecture** | 12 | Universal | Test presence, healthy test-to-source ratio, integration layer, CI |
+| **Modularity & Coupling** | 12 | Deep\* | No circular deps, no fan-out/fan-in outliers, shallow graph |
+| **Testing Architecture** | 12 | Universal | Test presence, healthy test-to-source ratio, integration layer, CI-runs-tests |
 | **Config & 12-Factor** | 10 | Universal | Env-based config, `.env.example`, no committed `.env`, no hardcoded endpoints |
 | **Error Handling & Resilience** | 8 | Universal | No swallowed errors, a central handler, timeouts/retries for services |
 | **Security Hygiene** | 8 | Universal | No leaked secrets, `.gitignore` covers env, lockfile committed |
 | **Observability** | 7 | Universal | Structured logging, metrics/tracing deps, health endpoints |
 | **Documentation** | 7 | Universal | A substantial README, architecture docs, contributing guide |
+| **Containerization** | 6 | Universal\*\* | A Dockerfile/compose file, with a HEALTHCHECK |
 
 \* Modularity uses the Deep tier when an adapter supports the language; otherwise
 it falls back to a coarse module-size cohesion proxy and says so.
+
+\*\* Containerization applies to **services only** (`backend`, `monorepo`). For
+CLIs, libraries, frontends, and mobile apps it's re-weighted out — they're never
+penalized for not having a Dockerfile.
 
 ### Rubric details
 
@@ -172,6 +184,16 @@ Universal fallback:
 - −18 — thin README (few words / headings)
 - −10 — no architecture/design docs
 - −5 — no CONTRIBUTING guide (larger projects)
+</details>
+
+<details>
+<summary><b>Containerization (6) — services only</b></summary>
+
+Applies to `backend` and `monorepo` projects; re-weighted out (never penalized)
+for CLIs, libraries, frontends, and mobile apps.
+
+- −30 — no Dockerfile or docker-compose file for a service
+- −12 — a Dockerfile is present but defines no `HEALTHCHECK`
 </details>
 
 Grades: **A** ≥ 90, **B** ≥ 80, **C** ≥ 70, **D** ≥ 60, **E** ≥ 50, else **F**.
@@ -305,7 +327,7 @@ Deep tier picks it up for matching projects automatically.
 ```bash
 npm install
 npm run build
-npm test          # 41 unit + e2e tests
+npm test          # 48 unit + e2e tests
 npm run selfscan  # run arch-score on itself
 ```
 

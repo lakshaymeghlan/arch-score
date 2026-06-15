@@ -10,16 +10,20 @@ export const CATEGORY_TITLES: Record<CategoryKey, string> = {
   testing: "Testing Architecture",
   config: "Config & 12-Factor",
   errorHandling: "Error Handling & Resilience",
+  containerization: "Containerization",
   observability: "Observability",
   security: "Security Hygiene",
   documentation: "Documentation",
 };
 
 /**
- * Default category weights (structure-first profile). They sum to 100.
- * Overridable via archscore.config.js. When a category is not applicable
- * (e.g. Deep-only metric on an unsupported language), its weight is removed
- * and the rest are re-normalized to 100.
+ * Default category weights (structure-first profile). These are *relative*
+ * weights: arch-score normalizes them across the categories that apply to a
+ * given project, so the effective weights always total 100 per project.
+ *
+ * Containerization only applies to services (backend/monorepo); for other
+ * project types it is re-weighted out, leaving the remaining nine weights
+ * (which total 100 on their own) unchanged. Overridable via archscore.config.js.
  */
 export const DEFAULT_WEIGHTS: Record<CategoryKey, number> = {
   architecture: 20,
@@ -31,6 +35,7 @@ export const DEFAULT_WEIGHTS: Record<CategoryKey, number> = {
   security: 8,
   observability: 7,
   documentation: 7,
+  containerization: 6,
 };
 
 /** Directories never worth scanning. */

@@ -35,7 +35,7 @@ describe("end-to-end analysis", () => {
     const report = analyzeProject(dir, { now: "2026-06-10T00:00:00.000Z" });
     expect(report.overall).toBeGreaterThanOrEqual(0);
     expect(report.overall).toBeLessThanOrEqual(100);
-    expect(report.categories).toHaveLength(9);
+    expect(report.categories).toHaveLength(10);
     expect(report.detection.primaryLanguage).toBe("TypeScript");
     expect(["backend", "library", "cli", "unknown"]).toContain(report.detection.projectType);
   });

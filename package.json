@@ -45,7 +45,6 @@
     "selfscan": "node dist/bin/archscore.js .",
     "prepublishOnly": "npm run build && npm test"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/node": "^20.11.0",
     "typescript": "^5.4.0",

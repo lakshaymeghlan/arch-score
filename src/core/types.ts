@@ -83,6 +83,7 @@ export type CategoryKey =
   | "testing"
   | "config"
   | "errorHandling"
+  | "containerization"
   | "observability"
   | "security"
   | "documentation";
