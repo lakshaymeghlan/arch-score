@@ -1,6 +1,26 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 import type { CategoryKey } from "./types.js";
 
-export const VERSION = "0.1.0";
+/**
+ * Read the package version from package.json at runtime so it never drifts from
+ * what `npm version` writes. Resolves package.json relative to this module
+ * (dist/core/ -> package root). Falls back gracefully if unreadable.
+ */
+function readVersion(): string {
+  try {
+    const here = dirname(fileURLToPath(import.meta.url));
+    const pkg = JSON.parse(readFileSync(join(here, "../../package.json"), "utf8")) as {
+      version?: string;
+    };
+    return pkg.version ?? "0.0.0";
+  } catch {
+    return "0.0.0";
+  }
+}
+
+export const VERSION = readVersion();
 
 /** Human titles for each category. */
 export const CATEGORY_TITLES: Record<CategoryKey, string> = {
