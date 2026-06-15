@@ -1,6 +1,6 @@
 {
   "name": "arch-score",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Language-agnostic CLI that scores how well any project follows modern system-design standards, recommends folder structures, and emits AI-assistant guidance files.",
   "keywords": [
     "architecture",
