@@ -6,28 +6,26 @@
 
 `arch-score` is a **heuristic advisor**, not a judge. It gives you a score (0–100), explains *why* points were lost with file-level references, and hands you prioritized, concrete fixes. It works on frontend or backend code in **any language**, runs **fully offline**, and has **zero paid dependencies**.
 
-```
-  arch-score  v0.1.0
-  ──────────────────────────────────────────────────────
-  Project   backend  (confidence 85%)
-  Language  TypeScript  ·  express
-  Tier      deep (JavaScript/TypeScript, 41 modules)
+**Example report** — a backend service (`TypeScript · express`, deep tier, 41 modules):
 
-  OVERALL    72/100  C   ████████████████████░░░░░░░░
-  ──────────────────────────────────────────────────────
+### 🟡 Overall&nbsp;&nbsp;72 / 100&nbsp;&nbsp;·&nbsp;&nbsp;grade C
 
-  Categories
-    Architecture & Layering      100 ██████████████ w19
-    Modularity & Coupling         80 ███████████░░░ w11 ◆
-    Folder Structure              88 ████████████░░ w15
-    Testing Architecture          45 ██████░░░░░░░░ w11
-    Containerization              70 ██████████░░░░ w6
-    ...
-```
+| | Category | Score | Weight |
+|:--:|:--|--:|--:|
+| 🟢 | Architecture & Layering | **100** | 19 |
+| 🟢 | Modularity & Coupling ◆ | **80** | 11 |
+| 🟢 | Folder Structure | **88** | 15 |
+| 🔴 | Testing Architecture | **45** | 11 |
+| 🟡 | Containerization | **70** | 6 |
+| ⚪ | …other categories | | |
+
+**Legend** &nbsp; 🟢 ≥ 80 (healthy) &nbsp;·&nbsp; 🟡 60–79 (needs work) &nbsp;·&nbsp; 🔴 < 60 (at risk) &nbsp;·&nbsp; ◆ deep-tier (import-graph) analysis
 
 > Weights are normalized across the categories that apply to your project — a
 > backend includes Containerization (shown above); a CLI or library re-weights
-> it out, and the remaining categories total 100 on their own.
+> it out, and the remaining categories total 100 on their own. In your terminal
+> these scores and bars are rendered in **live ANSI color**; the table above is
+> the color-coded equivalent for npm/GitHub.
 
 ---
 
