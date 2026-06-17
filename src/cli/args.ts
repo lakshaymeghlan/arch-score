@@ -10,6 +10,9 @@ export interface CliOptions {
   emitSkill: boolean;
   skillFormat: SkillFormat;
   skillOut: string | null;
+  emitBadge: string | null;
+  emitBadgeJson: string | null;
+  emitComment: string | null;
   deepAi: boolean;
   noDeep: boolean;
   help: boolean;
@@ -30,6 +33,9 @@ export function parseArgs(argv: string[]): CliOptions {
     emitSkill: false,
     skillFormat: "agents",
     skillOut: null,
+    emitBadge: null,
+    emitBadgeJson: null,
+    emitComment: null,
     deepAi: false,
     noDeep: false,
     help: false,
@@ -88,6 +94,15 @@ export function parseArgs(argv: string[]): CliOptions {
       case "--skill-out":
         o.skillOut = takeValue();
         break;
+      case "--emit-badge":
+        o.emitBadge = arg.includes("=") ? takeValue() : "arch-score-badge.svg";
+        break;
+      case "--emit-badge-json":
+        o.emitBadgeJson = arg.includes("=") ? takeValue() : "arch-score-badge.json";
+        break;
+      case "--emit-comment":
+        o.emitComment = arg.includes("=") ? takeValue() : "arch-score-comment.md";
+        break;
       case "--deep-ai":
         o.deepAi = true;
         break;
@@ -129,6 +144,9 @@ Generators:
   --emit-skill          Write an AI-assistant guidance file
   --format <fmt>        Skill format: agents | claude | cursor | copilot (default: agents)
   --skill-out <file>    Override the skill output path
+  --emit-badge[=file]   Write a self-contained SVG score badge (default: arch-score-badge.svg)
+  --emit-badge-json[=f] Write a shields.io endpoint JSON badge (default: arch-score-badge.json)
+  --emit-comment[=file] Write a concise markdown summary for a PR comment (default: arch-score-comment.md)
 
 Analysis:
   --no-deep             Skip Deep-tier (import-graph) analysis

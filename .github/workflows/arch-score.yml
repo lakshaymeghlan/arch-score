@@ -1,0 +1,28 @@
+name: arch-score
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Needed so the action can post a PR comment and push the badge branch.
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  arch-score:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run arch-score (dog-food via the local action)
+        id: score
+        uses: ./
+        with:
+          threshold: "85" # self-score is ~94; fail if it ever regresses below 85
+          build-from-source: "true" # use this repo's own source, not the npm release
+
+      - name: Print result
+        shell: bash
+        run: echo "arch-score = ${{ steps.score.outputs.score }} (${{ steps.score.outputs.grade }}), tier ${{ steps.score.outputs.tier }}"

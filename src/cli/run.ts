@@ -7,6 +7,9 @@ import {
   generateSystemDesign,
   generateSkill,
   SKILL_FILENAMES,
+  generateBadgeSvg,
+  generateBadgeJson,
+  generatePrComment,
 } from "../generators/index.js";
 import { deepReview } from "../ai/deepReview.js";
 import { VERSION } from "../core/constants.js";
@@ -70,6 +73,18 @@ export async function run(argv: string[]): Promise<number> {
     const out = opts.skillOut ?? SKILL_FILENAMES[opts.skillFormat];
     writeFileEnsuringDir(out, generateSkill(report, opts.skillFormat));
     if (!opts.json) process.stdout.write(`  → ${out} written (${opts.skillFormat} format)\n`);
+  }
+  if (opts.emitBadge) {
+    writeFileEnsuringDir(opts.emitBadge, generateBadgeSvg(report));
+    if (!opts.json) process.stdout.write(`  → ${opts.emitBadge} written (SVG badge)\n`);
+  }
+  if (opts.emitBadgeJson) {
+    writeFileEnsuringDir(opts.emitBadgeJson, generateBadgeJson(report));
+    if (!opts.json) process.stdout.write(`  → ${opts.emitBadgeJson} written (shields endpoint)\n`);
+  }
+  if (opts.emitComment) {
+    writeFileEnsuringDir(opts.emitComment, generatePrComment(report));
+    if (!opts.json) process.stdout.write(`  → ${opts.emitComment} written (PR comment)\n`);
   }
 
   // Optional AI deep-review.

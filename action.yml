@@ -1,0 +1,107 @@
+name: "arch-score"
+description: "Score how well any project follows modern system-design standards — gate CI, comment on PRs, and publish a score badge."
+author: "lakshaymeghlan"
+branding:
+  icon: "bar-chart-2"
+  color: "purple"
+
+inputs:
+  path:
+    description: "Project directory to analyze."
+    default: "."
+  threshold:
+    description: "Fail the build if the overall score is below this (0-100). 0 = never fail."
+    default: "0"
+  comment:
+    description: "Post/update a sticky score comment on pull requests."
+    default: "true"
+  badge:
+    description: "Commit an updated score badge to the badge branch on pushes."
+    default: "true"
+  badge-branch:
+    description: "Orphan branch the badge files are committed to."
+    default: "arch-score-badge"
+  version:
+    description: "arch-score npm version to run (when build-from-source is false)."
+    default: "latest"
+  build-from-source:
+    description: "Build arch-score from the action's own checkout instead of installing from npm."
+    default: "false"
+  github-token:
+    description: "Token used to post comments and push the badge."
+    default: ${{ github.token }}
+
+outputs:
+  score:
+    description: "Overall arch-score (0-100)."
+    value: ${{ steps.run.outputs.score }}
+  grade:
+    description: "Letter grade (A-F)."
+    value: ${{ steps.run.outputs.grade }}
+  tier:
+    description: "Analysis tier used (universal | deep)."
+    value: ${{ steps.run.outputs.tier }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "20"
+
+    - name: Run arch-score
+      id: run
+      shell: bash
+      run: |
+        set -e
+        if [ "${{ inputs.build-from-source }}" = "true" ]; then
+          ( cd "$GITHUB_ACTION_PATH" && npm ci && npm run build )
+          BIN=(node "$GITHUB_ACTION_PATH/dist/bin/archscore.js")
+        else
+          BIN=(npx -y "arch-score@${{ inputs.version }}")
+        fi
+        OUT="$RUNNER_TEMP/arch-score-out"
+        mkdir -p "$OUT"
+        "${BIN[@]}" "${{ inputs.path }}" \
+          --json \
+          --emit-comment="$OUT/comment.md" \
+          --emit-badge="$OUT/badge.svg" \
+          --emit-badge-json="$OUT/badge.json" > "$OUT/report.json"
+        ARCH_OUT="$OUT" node -e 'const r=require(process.env.ARCH_OUT+"/report.json");const fs=require("fs");fs.appendFileSync(process.env.GITHUB_OUTPUT,"score="+r.overall+"\ngrade="+r.grade+"\ntier="+r.tierUsed+"\n");console.log("arch-score: "+r.overall+" ("+r.grade+"), tier "+r.tierUsed);'
+        echo "ARCH_OUT=$OUT" >> "$GITHUB_ENV"
+
+    - name: Comment on PR
+      if: ${{ inputs.comment == 'true' && github.event_name == 'pull_request' }}
+      continue-on-error: true
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const fs = require('fs');
+          const body = fs.readFileSync(process.env.ARCH_OUT + '/comment.md', 'utf8');
+          const marker = '<!-- arch-score-bot -->';
+          const { owner, repo } = context.repo;
+          const issue_number = context.issue.number;
+          const { data: comments } = await github.rest.issues.listComments({ owner, repo, issue_number });
+          const existing = comments.find((c) => c.body && c.body.includes(marker));
+          if (existing) {
+            await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+          } else {
+            await github.rest.issues.createComment({ owner, repo, issue_number, body });
+          }
+
+    - name: Update score badge
+      if: ${{ inputs.badge == 'true' && github.event_name == 'push' }}
+      continue-on-error: true
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        BADGE_BRANCH: ${{ inputs.badge-branch }}
+      run: bash "$GITHUB_ACTION_PATH/action/commit-badge.sh"
+
+    - name: Enforce threshold
+      if: ${{ inputs.threshold != '0' }}
+      shell: bash
+      run: |
+        node -e 'const r=require(process.env.ARCH_OUT+"/report.json");const t=Number("${{ inputs.threshold }}");if(r.overall<t){console.error("arch-score "+r.overall+" is below threshold "+t);process.exit(1)}else{console.log("arch-score "+r.overall+" meets threshold "+t)}'

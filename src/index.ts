@@ -10,6 +10,11 @@ export {
   generateSystemDesign,
   generateSkill,
   SKILL_FILENAMES,
+  generateBadgeSvg,
+  generateBadgeJson,
+  badgeColorName,
+  generatePrComment,
+  PR_COMMENT_MARKER,
 } from "./generators/index.js";
 export type { SkillFormat } from "./generators/index.js";
 export { deepReview, buildSummary } from "./ai/deepReview.js";

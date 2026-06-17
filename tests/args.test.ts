@@ -38,4 +38,21 @@ describe("CLI argument parsing", () => {
   it("rejects unknown flags", () => {
     expect(() => parseArgs(["--nope"])).toThrow();
   });
+
+  it("parses badge and comment flags with defaults", () => {
+    const o = parseArgs(["--emit-badge", "--emit-badge-json", "--emit-comment"]);
+    expect(o.emitBadge).toBe("arch-score-badge.svg");
+    expect(o.emitBadgeJson).toBe("arch-score-badge.json");
+    expect(o.emitComment).toBe("arch-score-comment.md");
+  });
+
+  it("parses badge/comment flags with explicit paths", () => {
+    const o = parseArgs([
+      "--emit-badge=out/b.svg",
+      "--emit-comment=out/c.md",
+    ]);
+    expect(o.emitBadge).toBe("out/b.svg");
+    expect(o.emitComment).toBe("out/c.md");
+    expect(o.emitBadgeJson).toBe(null);
+  });
 });
