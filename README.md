@@ -2,7 +2,7 @@
 
 > A language-agnostic CLI that scores how well **any** project follows modern system-design standards, recommends the best folder structure, and emits guidance files that make AI coding assistants follow good system design.
 
-[![arch-score](https://raw.githubusercontent.com/lakshaymeghlan/arch-score/arch-score-badge/arch-score-badge.svg)](https://github.com/lakshaymeghlan/arch-score)
+[![arch-score](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/lakshaymeghlan/arch-score/arch-score-badge/arch-score-badge.json)](https://github.com/lakshaymeghlan/arch-score)
 [![npm](https://img.shields.io/npm/v/arch-score.svg)](https://www.npmjs.com/package/arch-score)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 
@@ -281,16 +281,20 @@ On a pull request it posts/updates a single sticky comment with the score table 
 
 ### Badge
 
-After the Action has run once, add the badge to your README (self-hosted SVG — no third-party service):
+After the Action has run once, add the badge to your README. The Action writes both
+`arch-score-badge.json` and `arch-score-badge.svg` to the `arch-score-badge` branch.
+
+**Recommended** — the shields.io endpoint (reads the JSON; renders reliably on GitHub):
+
+```markdown
+[![arch-score](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<owner>/<repo>/arch-score-badge/arch-score-badge.json)](https://github.com/lakshaymeghlan/arch-score)
+```
+
+**Fully self-hosted** — the SVG, no third-party at all (note: raw `.svg` files can render
+inconsistently through GitHub's image proxy, so prefer the endpoint above for GitHub READMEs):
 
 ```markdown
 [![arch-score](https://raw.githubusercontent.com/<owner>/<repo>/arch-score-badge/arch-score-badge.svg)](https://github.com/lakshaymeghlan/arch-score)
-```
-
-Prefer the shields.io look? The Action also writes `arch-score-badge.json` (a [shields endpoint](https://shields.io/badges/endpoint-badge)) to the same branch:
-
-```markdown
-![arch-score](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/<owner>/<repo>/arch-score-badge/arch-score-badge.json)
 ```
 
 The badge auto-updates every push. You can also generate badge files locally — fully offline — with `archscore . --emit-badge --emit-badge-json`.
