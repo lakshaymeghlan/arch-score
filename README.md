@@ -12,7 +12,7 @@
 
 **Example report** — a backend service (`TypeScript · express`, deep tier, 41 modules):
 
-### 🟡 Overall&nbsp;&nbsp;72 / 100&nbsp;&nbsp;·&nbsp;&nbsp;grade C
+### 🟢 Overall&nbsp;&nbsp;97 / 100&nbsp;&nbsp;·&nbsp;&nbsp;grade C
 
 | | Category | Score | Weight |
 |:--:|:--|--:|--:|
