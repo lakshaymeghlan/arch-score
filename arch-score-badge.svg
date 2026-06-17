@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="132" height="20" role="img" aria-label="arch-score: 95 (A)">
-  <title>arch-score: 95 (A)</title>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="132" height="20" role="img" aria-label="arch-score: 97 (A)">
+  <title>arch-score: 97 (A)</title>
   <linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>
   <clipPath id="r"><rect width="132" height="20" rx="3" fill="#fff"/></clipPath>
   <g clip-path="url(#r)">
@@ -10,7 +10,7 @@
   <g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" text-rendering="geometricPrecision" font-size="110">
     <text aria-hidden="true" x="400" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="700">arch-score</text>
     <text x="400" y="140" transform="scale(.1)" textLength="700">arch-score</text>
-    <text aria-hidden="true" x="1060" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="420">95 (A)</text>
-    <text x="1060" y="140" transform="scale(.1)" textLength="420">95 (A)</text>
+    <text aria-hidden="true" x="1060" y="150" fill="#010101" fill-opacity=".3" transform="scale(.1)" textLength="420">97 (A)</text>
+    <text x="1060" y="140" transform="scale(.1)" textLength="420">97 (A)</text>
   </g>
 </svg>
